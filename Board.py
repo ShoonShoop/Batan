@@ -1,4 +1,5 @@
-from Tile import *
+from Settlement import *
+from PlayerInfo import *
 
 
 
@@ -40,16 +41,36 @@ def num_of_inters(pos):
             intersections += 1
     return intersections
 
+radius = 60
+
+
 def mdown():
     pos = pygame.mouse.get_pos()
-    if num_of_inters(pos) == 3:
-        return True
 
-def place_city():
-    if mdown():
-        pos = pygame.mouse.get_pos()
-        pygame.draw.circle(window, (0, 255, 0), pos, 5, 1)
-        pygame.display.update()
+def settlement_place(pos):
+    if num_of_inters(pos) == 3:
+        X = pos[0]
+        Y = pos[1]
+        indx = 0
+        if player.list_settlements:
+            while indx < len(player.list_settlements):
+                dist = round(math.sqrt(((X - player.list_settlements[indx].x) ** 2) + ((Y - player.list_settlements[indx].y) ** 2)))
+                if dist < radius:
+                    break
+                indx += 1
+            if indx == len(player.list_settlements):
+                player.list_settlements.append(Settlement(X, Y, 0))
+                place_city(pos)
+                print(player.list_settlements)
+        else:
+            place_city(pos)
+            player.list_settlements.append(Settlement(X, Y, 0))
+            print(player.list_settlements)
+
+
+def place_city(pos):
+    pygame.draw.circle(window, (0, 255, 0), pos, radius, 2)
+    pygame.display.update()
 
 run = True
 
@@ -59,7 +80,7 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            place_city()
+            settlement_place(pygame.mouse.get_pos())
         for tile in lot:
             tile.draw()
 

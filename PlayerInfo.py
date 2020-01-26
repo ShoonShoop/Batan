@@ -10,4 +10,7 @@ class Player:
         self.city = 0
         self.road = 0
         self.development_card = 0
+        self.list_settlements = []
 
+
+player = Player()

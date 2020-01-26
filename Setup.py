@@ -6,7 +6,7 @@ pygame.init()
 
 clock = pygame.time.Clock()
 
-window = pygame.display.set_mode((1000, 600))
+window = pygame.display.set_mode((1200, 650))
 
 lot = []
 column = 0
